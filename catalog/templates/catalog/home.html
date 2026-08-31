@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Catalog — Library Management System{% endblock %}
+
+{% block content %}
+<h1>Catalog</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Available</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.available_copies }} / {{ book.total_copies }}</td>
+            <td>
+                <form method="post" action="{% url 'loans:borrow_book' book.id %}">
+                    {% csrf_token %}
+                    <button type="submit" {% if book.available_copies <= 0 %}disabled{% endif %}>
+                        Borrow
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No books in the catalog yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

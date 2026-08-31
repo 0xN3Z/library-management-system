@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}My Loans - Library Management System{% endblock %}
+
+{% block content %}
+<h1>My Loans</h1>
+
+{# Feedback area for success/error/info messages from the borrow/return flow.#}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Active Loans</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Author</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in active_loans %}
+        <tr>
+            <td>{{ loan.book.title }}</td>
+            <td>{{ loan.book.author }}</td>
+            <td>{{ loan.borrow_date|date:"M d, Y" }}</td>
+            <td>{{ loan.due_date|date:"M d, Y" }}</td>
+            <td>
+                {% if loan.is_overdue %}
+                <span class="badge badge-overdue">Overdue</span>
+                {% else %}
+                <span class="badge badge-borrowed">Borrowed</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="post" action="{% url 'loans:return_book' loan.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Return Book</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">You have no active loans. Browse the <a href="{% url 'home' %}">catalog</a> to borrow a book.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Loan History</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in returned_loans %}
+        <tr>
+            <td>{{ loan.book.title }}</td>
+            <td>{{ loan.borrow_date|date:"M d, Y" }}</td>
+            <td>{{ loan.return_date|date:"M d, Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No returned loans yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

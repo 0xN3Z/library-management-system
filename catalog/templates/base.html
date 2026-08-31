@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        nav a { margin-right: 1rem; }
+        .messages { list-style: none; padding: 0; }
+        .messages li { padding: .6rem 1rem; margin-bottom: .4rem; border-radius: 4px; }
+        .messages .success { background: #d4edda; color: #155724; }
+        .messages .error { background: #f8d7da; color: #721c24; }
+        .messages .warning { background: #fff3cd; color: #856404; }
+        .messages .info { background: #d1ecf1; color: #0c5460; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: .5rem; text-align: left; }
+        .badge { display: inline-block; padding: .15rem .4rem; border-radius: 4px; font-size: .75rem; }
+        .badge-overdue { background: #dc3545; color: #fff; }
+        .badge-borrowed { background: #ffc107; color: #212529; }
+    </style>
+</head>
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'home' %}">Catalog</a>
+            <a href="{% url 'loans:my_loans' %}">My Loans</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+            <form method="post" action="{% url 'logout' %}" style="display:inline">
+                {% csrf_token %}
+                <button type="submit">Logout ({{ user.username }})</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
