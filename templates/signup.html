@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="divsign">
+    <img src="{% static 'images/loginicon.png' %}" class="logicn">
+    <p class="plogin">Create Account</p>
+    <p>Join Readers' Haven and discover amazing books.</p>
+    <div class="signfrm">
+        <form method="post" action="{% url 'signup' %}" id="signup_form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <p style="color: red;">{{ form.non_field_errors.0 }}</p>
+            {% endif %}
+
+            <label for="name">Full Name:</label>
+            <br>
+            <input type="text" id="name" name="name" class="inpname" value="{{ form.name.value|default:'' }}">
+            <span id="name-error" class="error-message" style="display:none; color:red;"></span>
+            {% if form.name.errors %}<p style="color: red;">{{ form.name.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="email">Email:</label>
+            <br>
+            <input type="email" id="email" name="email" class="inpemail" value="{{ form.email.value|default:'' }}">
+            <span id="email-error" class="error-message" style="display:none; color:red;"></span>
+            {% if form.email.errors %}<p style="color: red;">{{ form.email.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="password">Password:</label>
+            <br>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" class="inppassword">
+                <img src="{% static 'images/eye.png' %}" onclick="togglePassword('password', this)"
+                    class="toggle-eye-icon" alt="Show password">
+            </div>
+            <span id="password-error" class="error-message" style="display:none; color:red;"></span>
+            {% if form.password.errors %}<p style="color: red;">{{ form.password.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <br>
+            <div class="password-wrapper">
+                <input type="password" id="confirm_password" name="confirm_password" class="inppassword">
+                <img src="{% static 'images/eye.png' %}" onclick="togglePassword('confirm_password', this)"
+                    class="toggle-eye-icon" alt="Show password">
+            </div>
+            <span id="confirm_password-error" class="error-message" style="display:none; color:red;"></span>
+            {% if form.confirm_password.errors %}<p style="color: red;">{{ form.confirm_password.errors.0 }}</p>{% endif %}
+            <br>
+
+            <div>
+                <button type="submit" class="submit-signup">Sign Up</button>
+            </div>
+        </form>
+        <p>Already have an account?
+            <a href="{% url 'login' %}" style="text-decoration: none;" class="createAcc">
+                <u>Login</u>
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}

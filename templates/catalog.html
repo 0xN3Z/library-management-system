@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Book Catalog{% endblock %}
+{% block content %}
+<div class="text">
+    <h1><i>Book Catalog</i></h1>
+    <p class="ptext">Browse and search books from our collection.</p>
+</div>
+<div class="search">
+    <form method="get" onsubmit="return false;">
+        <input class="searchbox" type="search" id="searchbox" name="q" style="width: 50%;"
+            placeholder="Search by title or author...">
+        <input class="btSearch" type="submit" value="Search">
+        <select class="Categories" name="category" size="1">
+            <option value="all">All Categories</option>
+            <option>Self Help</option>
+            <option>Finance & Business</option>
+            <option>Religious Books</option>
+            <option>Political Books</option>
+            <option>Literature</option>
+            <option>History</option>
+        </select>
+    </form>
+</div>
+<br>
+<div class="tableBooks">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Available Copies</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr class="book-row" data-title="{{ book.title }}" data-author="{{ book.author }}"
+                data-category="{{ book.category }}">
+                <td class="tdTitle">{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.category }}</td>
+                <td>{{ book.available_copies }}/{{ book.total_copies }}</td>
+                <td>
+                    {% if book.available_copies > 0 %}
+                    <button class="btBorrow">Borrow</button>
+                    {% else %}
+                    <button disabled class="btUnavailable">Unavailable</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No books found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

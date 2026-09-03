@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}My Loans{% endblock %}
+{% block content %}
+<div class="text">
+    <h1><i>My Loans</i></h1>
+    <p class="ptext">Here are the books you currently borrowed.</p>
+</div>
+<div class="tableBooks">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Borrow Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+            <tr>
+                <td class="tdTitle">{{ loan.book.title }}</td>
+                <td>{{ loan.book.author }}</td>
+                <td>{{ loan.borrow_date }}</td>
+                <td><button class="btReturn">Return</button></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">You have no borrowed books.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

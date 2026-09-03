@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="mainhome">
+    <div class="texthm">
+        <p class="welcomeL1">Welcome to</p>
+        <p class="welcomeL2">Readers' Haven</p>
+        <img src="{% static 'images/home_icon.png' %}" class="homeicon">
+        <p class="Description1">your cozy place to discover, borrow,</p>
+        <p class="Description2">and enjoy amazing books.</p>
+        <br>
+        {% if user.is_authenticated %}
+    <p style="font-size: 24px; color: #3e1a08;">Welcome back, {{ user.first_name }}! 📚</p>
+{% else %}
+    <a href="{% url 'login' %}"><button class="btlogin"><img src="{% static 'images/login_icon.png' %}" class="login"> Login</button></a>
+{% endif %}
+    </div>
+    <img src="{% static 'images/books.png' %}" class="imghome">
+</div>
+<div class="homemid">
+    <table class="hometable">
+        <tbody>
+            <tr>
+                <td class="searchimg"><img src="{% static 'images/browse.png' %}"></td>
+                <td>
+                    <p><b>Search Easily</b></p>
+                    <p>find books by title, author</p>
+                    <p>or catalog in second.</p>
+                </td>
+                <td class="borrowimg"><img src="{% static 'images/open_book.png' %}"></td>
+                <td>
+                    <p><b>Borrow Anytime</b></p>
+                    <p>Borrow your favorite books</p>
+                    <p>and manage them easily.</p>
+                </td>
+                <td class="returnimg"><img src="{% static 'images/clock.png' %}"></td>
+                <td>
+                    <p><b>Return On Time</b></p>
+                    <p>keep track of due dates</p>
+                    <p>and return books</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="footerhm">
+    <p class="phmftr">"Every book opens a new door"</p>
+    <img src="{% static 'images/booksicon.png' %}" class="booksicon">
+</div>
+{% endblock %}

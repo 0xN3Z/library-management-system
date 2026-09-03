@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Readers' Haven{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+{% load static %}
+<script>
+function togglePassword(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.src = "{% static 'images/hidden.png' %}";
+        icon.alt = "Hide password";
+    } else {
+        input.type = "password";
+        icon.src = "{% static 'images/eye.png' %}";
+        icon.alt = "Show password";
+    }
+}
+</script>
+<script>
+function toggleProfileMenu() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+}
+
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.profile-menu')) {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown) dropdown.classList.remove('show');
+    }
+});
+</script>
+{% load static %}
+<script src="{% static 'js/main.js' %}"></script>
+<body>
+        <div class="Navbar">
+        <ul>
+            <li class="imgNavbar"><img src="{% static 'images/nav_icon.png' %}" class="navicon"></li>
+            <li class="LiNavbar"><a href="{% url 'home' %}">Home</a></li>
+            <li class="LiNavbar"><a href="{% url 'catalog' %}">Catalog</a></li>
+            <li class="LiNavbar"><a href="{% url 'my_loans' %}">My Loans</a></li>
+        </ul>
+        <ul>
+            {% if user.is_authenticated %}
+            <li class="LiNavbar profile-menu">
+                <div class="profile-icon" onclick="toggleProfileMenu()">
+                    {{ user.first_name|first|upper }}
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-name">{{ user.first_name }}</div>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Logout</button>
+                    </form>
+                </div>
+            </li>
+            {% else %}
+            <li class="LiNavbar"><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <br>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <br>
+    <div class="footer">
+        <footer>
+            <p>© 2026 All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
