@@ -123,6 +123,14 @@ python manage.py runserver
 ```
 
 Then open **http://127.0.0.1:8000/** in your browser.
+## Demo Accounts
+
+| Role | Email / Username | Password | Access |
+|---|---|---|---|
+| Member | `reemahmedmohamed2005@gmail.com` | `Reem22#eeWdd` | Catalog, borrow/return, my loans |
+| Admin | `rnzuko` | `aannGG55#` | `/admin/` — full catalog & loan management |
+
+> These are demo credentials provided for testing the project
 
 
 **Home**
@@ -175,15 +183,14 @@ These are acknowledged gaps, intentionally out of scope for a one-week academic 
 
 ## Team & Contributions
 
-| Member | Role | Contribution |
-|---|---|---|
-| Sara_Saif | Backend — Auth | Signup/login/logout views, forms, and password security |
-| Mennat-Allah_Alaa | Backend — Models & Admin | Book model, Django Admin registration, sample data seeding |
-| Ahmed | Backend — Borrow/Return | Loan model, borrow/return logic, availability checks, race-condition handling |
-| Ranwa_Wael | Front-End — Templates & CSS | Page layouts, navigation, catalog/my-loans/auth page design |
-| Alaa-Allah_Mustafa | Front-End — JavaScript | Signup validation, live catalog search/filter |
-| Reem_Ahmed | Integration & QA Lead | Repository setup, cross-branch integration, security hardening, bug fixing, testing, documentation |
-
+| Member | Role | Contribution | LinkedIn |
+|---|---|---|---|
+| Sara Saif | Backend — Auth | Signup/login/logout views, forms, and password security | [LinkedIn](https://www.linkedin.com/in/sara-seif-557142312/) |
+| Mennat Allah Alaa | Backend — Models & Admin | Book model, Django Admin registration, sample data seeding | [LinkedIn](https://www.linkedin.com/in/mennat-allah-mohamed-51522a412/) |
+| Ahmed Mohamed Saadawi | Backend — Borrow/Return | Loan model, borrow/return logic, availability checks, race-condition handling | [LinkedIn](https://www.linkedin.com/in/ahmedsadiwy/) |
+| Ranwa Wael | Front-End — Templates & CSS | Page layouts, navigation, catalog/my-loans/auth page design | [LinkedIn](https://www.linkedin.com/in/%D8%B1%D9%86%D9%88%D8%A9-%D9%88%D8%A7%D8%A6%D9%84-665587323/) |
+| Alaa-Allah Mustafa | Front-End — JavaScript | Signup validation, live catalog search/filter | [LinkedIn](https://www.linkedin.com/in/alaa-mostafa-21657b363/) |
+| Reem Ahmed | Integration & QA Lead | Repository setup, cross-branch integration, security hardening, bug fixing, testing, documentation | [LinkedIn](https://www.linkedin.com/in/reem-ahmed20/) |
 ## Development Approach
 
 Given the one-week timeline, integration was performed progressively and reviewed at each step rather than through a strict branch-per-task workflow throughout. Individual contributions — most notably the borrowing/return logic — were isolated in dedicated feature branches (e.g. `feature/loans-ahmed`) before being reviewed and merged into `main`, ensuring no work was lost even when conflicts arose from parallel development.
