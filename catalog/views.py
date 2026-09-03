@@ -7,6 +7,3 @@ def catalog_view(request):
     books = Book.objects.all()
     return render(request, 'catalog.html', {'books': books})
 
-@login_required
-def my_loans_view(request):
-    return render(request, 'my_loans.html')

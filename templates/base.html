@@ -44,7 +44,7 @@ window.addEventListener('click', function(event) {
             <li class="imgNavbar"><img src="{% static 'images/nav_icon.png' %}" class="navicon"></li>
             <li class="LiNavbar"><a href="{% url 'home' %}">Home</a></li>
             <li class="LiNavbar"><a href="{% url 'catalog' %}">Catalog</a></li>
-            <li class="LiNavbar"><a href="{% url 'my_loans' %}">My Loans</a></li>
+            <li class="LiNavbar"><a href="{% url 'loans:my_loans' %}">My Loans</a></li>
         </ul>
         <ul>
             {% if user.is_authenticated %}

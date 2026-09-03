@@ -44,7 +44,10 @@
                 <td>{{ book.available_copies }}/{{ book.total_copies }}</td>
                 <td>
                     {% if book.available_copies > 0 %}
-                    <button class="btBorrow">Borrow</button>
+                    <form method="post" action="{% url 'loans:borrow_book' book.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btBorrow">Borrow</button>
+                    </form>
                     {% else %}
                     <button disabled class="btUnavailable">Unavailable</button>
                     {% endif %}
