@@ -178,14 +178,8 @@ Once saved, each will appear here:
 **My Loans**
 ![My Loans](docs/screenshots/my-loans.png)
 
-**My Loans — Due-Date Reminder**
-![My Loans Reminder](docs/screenshots/my-loans-reminder.png)
-
 **Edit Profile**
 ![Edit Profile](docs/screenshots/profile-edit.png)
-
-**Navbar — Profile Photo**
-![Profile Navbar](docs/screenshots/profile-navbar.png)
 
 **Admin — Books**
 ![Admin Books](docs/screenshots/admin-books.png)
