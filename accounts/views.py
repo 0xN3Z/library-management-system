@@ -1,9 +1,14 @@
+from io import BytesIO
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.core.files.base import ContentFile
+from PIL import Image
+
 from .forms import SignupForm, LoginForm, ProfileEditForm
 from .models import Profile
 
@@ -86,6 +91,26 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('login')
+
+
+def _resave_image_safely(uploaded_file, target_size=(500, 500)):
+    """
+    Re-encodes an uploaded image from scratch using Pillow, stripping any
+    embedded metadata/scripts and normalizing it to a safe JPEG. This means
+    what gets written to disk is never the raw bytes the user uploaded.
+    """
+    uploaded_file.seek(0)
+    img = Image.open(uploaded_file)
+    img = img.convert('RGB')  # drops alpha channel and any unusual color profiles
+    img.thumbnail(target_size)  # also caps stored resolution
+
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=85)
+    buffer.seek(0)
+
+    return ContentFile(buffer.read(), name='profile.jpg')
+
+
 @login_required
 def profile_view(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
@@ -100,8 +125,12 @@ def profile_view(request):
             request.user.save()
 
             profile.age = form.cleaned_data.get('age')
-            if form.cleaned_data.get('photo'):
-                profile.photo = form.cleaned_data['photo']
+
+            uploaded_photo = form.cleaned_data.get('photo')
+            if uploaded_photo:
+                safe_image = _resave_image_safely(uploaded_photo)
+                profile.photo.save(safe_image.name, safe_image, save=False)
+
             profile.save()
 
             messages.success(request, "Profile updated successfully.")

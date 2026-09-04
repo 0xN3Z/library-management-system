@@ -1,7 +1,16 @@
+import os
+from io import BytesIO
+
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from PIL import Image
+
+
+ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp'}
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
+MAX_UPLOAD_SIZE_MB = 3
 
 
 class SignupForm(forms.Form):
@@ -78,7 +87,6 @@ class LoginForm(forms.Form):
         strip=False,
         error_messages={'required': 'Password is required.'}
     )
-    from django.contrib.auth.models import User
 
 
 class ProfileEditForm(forms.Form):
@@ -103,3 +111,51 @@ class ProfileEditForm(forms.Form):
             raise forms.ValidationError("This email is already in use by another account.")
 
         return email
+
+    def clean_photo(self):
+        photo = self.cleaned_data.get('photo')
+
+        if not photo:
+            return photo
+
+        # 1. Reject oversized files before doing any further processing.
+        max_bytes = MAX_UPLOAD_SIZE_MB * 1024 * 1024
+        if photo.size > max_bytes:
+            raise forms.ValidationError(
+                f"Image is too large. Maximum allowed size is {MAX_UPLOAD_SIZE_MB}MB."
+            )
+
+        # 2. Reject anything whose declared MIME type isn't an allowed image type.
+        # This blocks obvious mismatches like a .php file renamed to .jpg.
+        content_type = getattr(photo, 'content_type', None)
+        if content_type not in ALLOWED_IMAGE_TYPES:
+            raise forms.ValidationError("Only JPEG, PNG, and WEBP images are allowed.")
+
+        # 3. Reject extensions that don't match an allowed image extension,
+        # even if the MIME type header was spoofed.
+        ext = os.path.splitext(photo.name)[1].lower()
+        if ext not in ALLOWED_EXTENSIONS:
+            raise forms.ValidationError("Unsupported file extension.")
+
+        # 4. Actually open and decode the image with Pillow. This is the real
+        # check — it forces the file to be parsed as a genuine image. A
+        # disguised script or corrupted/malicious file will fail here even if
+        # it passed the MIME type and extension checks above.
+        try:
+            photo.seek(0)
+            img = Image.open(photo)
+            img.verify()  # raises if the file isn't a valid, complete image
+        except Exception:
+            raise forms.ValidationError("This file is not a valid image.")
+
+        # 5. Guard against decompression-bomb style images (huge pixel
+        # dimensions that are cheap to store but expensive to process).
+        photo.seek(0)
+        img = Image.open(photo)
+        max_pixels = 20_000_000  # ~20 megapixels
+        if img.width * img.height > max_pixels:
+            raise forms.ValidationError("Image resolution is too large.")
+
+        # Reset the file pointer so Django can actually save it afterwards.
+        photo.seek(0)
+        return photo

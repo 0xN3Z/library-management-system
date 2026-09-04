@@ -141,3 +141,6 @@ SESSION_COOKIE_AGE = 3600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+# Ensure uploaded media files are never served with an executable content-type,
+# and are always downloaded/displayed as static files, never executed.
+FILE_UPLOAD_PERMISSIONS = 0o644
