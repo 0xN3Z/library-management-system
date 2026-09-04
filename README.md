@@ -173,7 +173,7 @@ Once saved, each will appear here:
 ![Catalog](docs/screenshots/catalog.png)
 
 **Catalog — Author Suggestions**
-![Catalog Suggestions](docs/screenshots/catalog-suggestions.png)
+![Catalog Suggestions](docs/screenshots/catalog-suggestions.jpg)
 
 **My Loans**
 ![My Loans](docs/screenshots/my-loans.png)
