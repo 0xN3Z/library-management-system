@@ -8,8 +8,7 @@
 </div>
 <div class="search">
     <form method="get" onsubmit="return false;">
-        <input class="searchbox" type="search" id="searchbox" name="q" style="width: 50%;"
-            placeholder="Search by title or author...">
+        <input class="searchbox" type="search" id="searchbox" name="q" style="width: 50%;" placeholder="Search by title or author...">
         <input class="btSearch" type="submit" value="Search">
         <select class="Categories" name="category" size="1">
             <option value="all">All Categories</option>
@@ -19,9 +18,17 @@
             <option>Political Books</option>
             <option>Literature</option>
             <option>History</option>
+            <option>Fiction</option>
+            <option>Programming</option>
         </select>
     </form>
 </div>
+
+<div id="suggestionsBox" class="suggestions-box" style="display:none;">
+    <p class="suggestions-title">📚 This book isn't available right now — you might also like:</p>
+    <div id="suggestionsList" class="suggestions-list"></div>
+</div>
+
 <br>
 <div class="tableBooks">
     <table>
@@ -36,8 +43,7 @@
         </thead>
         <tbody>
             {% for book in books %}
-            <tr class="book-row" data-title="{{ book.title }}" data-author="{{ book.author }}"
-                data-category="{{ book.category }}">
+            <tr class="book-row" data-id="{{ book.id }}" data-title="{{ book.title }}" data-author="{{ book.author }}" data-category="{{ book.category }}" data-available="{{ book.available_copies }}">
                 <td class="tdTitle">{{ book.title }}</td>
                 <td>{{ book.author }}</td>
                 <td>{{ book.category }}</td>
@@ -54,9 +60,7 @@
                 </td>
             </tr>
             {% empty %}
-            <tr>
-                <td colspan="5">No books found.</td>
-            </tr>
+            <tr><td colspan="5">No books found.</td></tr>
             {% endfor %}
         </tbody>
     </table>

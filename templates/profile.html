@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="divsign">
+    <p class="plogin">My Profile</p>
+    <p>Update your personal information.</p>
+    <div class="signfrm">
+
+        {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="Profile photo" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:15px;">
+        {% endif %}
+
+        <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <p style="color: red;">{{ form.non_field_errors.0 }}</p>
+            {% endif %}
+
+            <label for="name">Full Name:</label>
+            <br>
+            <input type="text" id="name" name="name" class="inpname" value="{{ form.name.value|default:'' }}">
+            {% if form.name.errors %}<p style="color: red;">{{ form.name.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="email">Email:</label>
+            <br>
+            <input type="email" id="email" name="email" class="inpemail" value="{{ form.email.value|default:'' }}">
+            {% if form.email.errors %}<p style="color: red;">{{ form.email.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="age">Age:</label>
+            <br>
+            <input type="number" id="age" name="age" class="inpname" value="{{ form.age.value|default:'' }}">
+            {% if form.age.errors %}<p style="color: red;">{{ form.age.errors.0 }}</p>{% endif %}
+            <br>
+
+            <label for="photo">Profile Photo:</label>
+            <br>
+            <input type="file" id="photo" name="photo" accept="image/*">
+            {% if form.photo.errors %}<p style="color: red;">{{ form.photo.errors.0 }}</p>{% endif %}
+            <br>
+
+            <div>
+                <button type="submit" class="submit-signup">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, ProfileEditForm
+from .models import Profile
 
 
 @require_http_methods(["GET", "POST"])
@@ -85,3 +86,34 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('login')
+@login_required
+def profile_view(request):
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES, current_user=request.user)
+
+        if form.is_valid():
+            request.user.first_name = form.cleaned_data['name']
+            request.user.email = form.cleaned_data['email']
+            request.user.username = form.cleaned_data['email']
+            request.user.save()
+
+            profile.age = form.cleaned_data.get('age')
+            if form.cleaned_data.get('photo'):
+                profile.photo = form.cleaned_data['photo']
+            profile.save()
+
+            messages.success(request, "Profile updated successfully.")
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(
+            initial={
+                'name': request.user.first_name,
+                'email': request.user.email,
+                'age': profile.age,
+            },
+            current_user=request.user,
+        )
+
+    return render(request, 'profile.html', {'form': form, 'profile': profile})

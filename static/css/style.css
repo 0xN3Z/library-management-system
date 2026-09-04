@@ -388,7 +388,12 @@ h1{
     cursor: pointer;
     margin: 0 15px;
 }
-
+.profile-icon-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
 .profile-dropdown {
     display: none;
     position: absolute;
@@ -423,4 +428,71 @@ h1{
     padding: 8px 15px;
     cursor: pointer;
     width: 100%;
+}
+.suggestions-box {
+    background-color: #f2eee1;
+    border: 1px solid #d4c9a8;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin: 15px 0;
+}
+
+.suggestions-title {
+    color: #3e1a08;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.suggestions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.suggestion-card {
+    background-color: #ffffff;
+    border: 1px solid #d4c9a8;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #3e1a08;
+    min-width: 160px;
+}
+.loan-alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.loan-alert-overdue {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f1aeb5;
+}
+
+.loan-alert-reminder {
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffe69c;
+}
+.edit-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8a7c66;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 4px 0 10px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e0d5b8;
+    transition: color 0.15s ease;
+}
+
+.edit-profile-link:hover {
+    color: #3e1a08;
+    text-decoration: none;
+}
+
+.edit-icon {
+    font-size: 12px;
 }

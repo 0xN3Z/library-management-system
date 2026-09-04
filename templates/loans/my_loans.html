@@ -5,6 +5,19 @@
     <h1><i>My Loans</i></h1>
     <p class="ptext">Here are the books you currently borrowed.</p>
 </div>
+
+{% for loan in active_loans %}
+    {% if loan.is_overdue %}
+        <div class="loan-alert loan-alert-overdue">
+            ⚠️ "{{ loan.book.title }}" is overdue! Please return it as soon as possible.
+        </div>
+    {% elif loan.due_soon %}
+        <div class="loan-alert loan-alert-reminder">
+            ⏰ Only {{ loan.days_remaining }} day{{ loan.days_remaining|pluralize }} left to return "{{ loan.book.title }}" — due on {{ loan.due_date|date:"Y-m-d" }}.
+        </div>
+    {% endif %}
+{% endfor %}
+
 <div class="tableBooks">
     <table>
         <thead>
@@ -25,7 +38,7 @@
                 <td>
                     {{ loan.due_date|date:"Y-m-d" }}
                     {% if loan.is_overdue %}
-                    <span style="color:red;">(Overdue)</span>
+                        <span style="color:red;">(Overdue)</span>
                     {% endif %}
                 </td>
                 <td>
@@ -36,9 +49,7 @@
                 </td>
             </tr>
             {% empty %}
-            <tr>
-                <td colspan="5">You have no borrowed books.</td>
-            </tr>
+            <tr><td colspan="5">You have no borrowed books.</td></tr>
             {% endfor %}
         </tbody>
     </table>

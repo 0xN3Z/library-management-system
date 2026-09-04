@@ -78,3 +78,28 @@ class LoginForm(forms.Form):
         strip=False,
         error_messages={'required': 'Password is required.'}
     )
+    from django.contrib.auth.models import User
+
+
+class ProfileEditForm(forms.Form):
+
+    name = forms.CharField(max_length=150, strip=True)
+
+    email = forms.EmailField(max_length=254)
+
+    age = forms.IntegerField(required=False, min_value=1, max_value=120)
+
+    photo = forms.ImageField(required=False)
+
+    def __init__(self, *args, current_user=None, **kwargs):
+        self.current_user = current_user
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].lower().strip()
+
+        # Allow keeping the same email, but block switching to someone else's.
+        if User.objects.filter(username=email).exclude(pk=self.current_user.pk).exists():
+            raise forms.ValidationError("This email is already in use by another account.")
+
+        return email
